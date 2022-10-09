@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/storozhenko98/my-fridge-frontend#readme",
   "dependencies": {
+    "quagga": "^0.12.1",
     "tesseract.js": "^3.0.3"
   },
   "devDependencies": {
