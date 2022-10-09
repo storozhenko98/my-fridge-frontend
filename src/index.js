@@ -532,60 +532,10 @@ const viewController = {
 
 };
 
-
+//Starter
 if (user.authed == false){viewController.createLogin()};
 
-
-
-/*const dbDelete = async (data) =>{
-  const response = await fetch('http://localhost:3000/db-delete', {
-    method: 'POST',
-    headers : {'Content-Type' : 'application/json',},
-    body: JSON.stringify(data)
-  })
-  const api = await response.json();
-  console.log(api, typeof(api));
-};
-
-const abc = {
-  username: 'niki98',
-  password: '081298',
-  uuid: '95e2fda9-40a0-4bdc-a41e-98c39bfbe281',
-}
-
-dbDelete(abc);
-
-*/
-/*const upcFetch = async (code) =>{
-  const response = await fetch('http://localhost:3000/upc-fetch', {
-    method: 'POST',
-    headers : {'Content-Type' : 'application/json',},
-    body: JSON.stringify({upc:code})
-  })
-  const api = await response.json();
-  console.log(api, typeof(api));
-};
-
-upcFetch('009342242343');
-*/
-
-/*import Quagga from 'quagga';
-const main = document.getElementById("main");
-const input = document.createElement("input");
-input.type = "file";
-input.addEventListener('change', ()=>{
-  let fileReady = input.files[0];
-  getBase64(fileReady);
-})
-main.appendChild(input);
-
-const upCode = document.createElement("input");
-upCode.type = "string";
-upCode.placeholder = "UPC code..."
-main.appendChild(upCode);
-
-*/
-
+//Bar Code Reader
 function getBase64(file) {
    var reader = new FileReader();
    reader.readAsDataURL(file);
