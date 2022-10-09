@@ -1,0 +1,285 @@
+*{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+body {
+    background-color: aliceblue;
+}
+
+#main {
+    width: 100%;
+    height: 98vh;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+#logHeader {
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-size: x-large;
+}
+
+#usrInput{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+    margin-bottom: 2%;
+}
+#pwdInput{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+#loginButton{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+    margin-bottom: 2%;
+}
+#registerButton{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+
+#regUSR{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+#regUSRLabel{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: larger;
+}
+#usrValButton{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+#pwdINPUT{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+#pwdINPUTLabel{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: larger;
+}
+#vB{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+
+#phnInput{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+#phnLabel{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: larger;
+}
+#vPB{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+
+#msgFINAL{
+    font-size: larger;
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+#usrFINAL{
+    font-size: larger;
+    border-style: solid;
+    border-radius: 25px;
+    background-color: white;
+    padding: 5%;
+}
+#passwordFINAL{
+    font-size: larger;
+    border-style: solid;
+    border-radius: 25px;
+    background-color: white;
+    padding: 5%;
+}
+#regButFINAL{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+    margin-bottom: 2%;
+}
+#phoneNumberFINAL{
+    font-size: larger;
+    border-style: solid;
+    border-radius: 25px;
+    background-color: white;
+    padding: 5%;
+    margin-bottom: 4%;
+}
+#tryAgainFINAL{
+    border-radius: 25px;
+    height: 5vh;
+    padding: 2%;
+    font-size: larger;
+}
+
+p{
+    text-align: center;
+}
+
+#header{
+    background-color: lightblue;
+    width: 100%;
+    height: 5vh;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vh;
+}
+
+#controller{
+    background-color: lightblue;
+    width: 100%;
+    height: 10vh;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 1vh;
+}
+
+#controller button {
+    width: 25%;
+    border-radius: 25px;
+    height: 6vh;
+
+}
+
+#view{
+    height: 85vh;
+    overflow-y: auto;
+    border-style: solid;
+    padding: 2%;
+    border-radius: 25px;
+    background-color: rgb(249, 251, 253);
+}
+
+.itemBox {
+    border-style: solid;
+    border-radius: 25px;
+    padding: 2%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2%;
+    background-color: white;
+}
+
+.itemBox button {
+    border-radius: 25px;
+    background-color: pink;
+}
+
+.boughtDate {
+    font-size: smaller;
+}
+.expirationDate{
+    font-size: smaller;
+}
+
+#scanDiv{
+    margin-top: 2%;
+    border-style: solid;
+    padding: 5%;
+    border-radius: 25px;
+    background-color: white;
+}
+
+#mDiv{
+    margin-top: 2%;
+    border-style: solid;
+    padding: 5%;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+#itemNameDiv{
+    margin-top: 2%;
+    border-style: solid;
+    padding: 5%;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+#itemNameDiv input {
+    border-radius: 25px;
+}
+
+#datingChoiceDiv{
+    margin-top: 2%;
+    display: flex;
+    border-style: solid;
+    padding: 5%;
+    border-radius: 25px;
+    background-color: white;
+
+}
+
+#datingChoiceDive select {
+    border-radius: 25px;
+}
+
+#datingInputDiv{
+    margin-top: 2%;
+    border-style: solid;
+    padding: 5%;
+    border-radius: 25px;
+    display: flex;
+    justify-content: end;
+    background-color: white;
+}
+
+#datingInputDiv input {
+    border-radius: 25px;
+    margin-right: 5%;
+}
+
+#upcERROR{
+    position: absolute; 
+    border-style: solid;
+    box-shadow: 0 0 10 10;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    margin-top: 33%;
+    width: 50%;
+    height: 25%;
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding-top: 25%;
+}
