@@ -20,17 +20,23 @@ const viewController = {
   usrValidate : false,
   pwdValidate : false, 
   phnValidate: false, 
+  upcVal: false,
   createLogin : ()=>{
     const usrInput = document.createElement("input");
+    const header = document.createElement('div');
+    header.innerHTML = "Welcome to my-Fridge";
+    header.id = "logHeader";
     usrInput.type = "string";
     usrInput.id = "usrInput";
     usrInput.placeholder = "Enter Username...";
     const pwdInput = document.createElement("input");
     pwdInput.type = "password";
     pwdInput.id = "pwdInput";
+    pwdInput.placeholder = "Password...";
     const errorP = document.createElement('p');
     const loginButton = document.createElement("button");
     loginButton.innerHTML = "Login";
+    loginButton.id = "loginButton";
     loginButton.addEventListener('click', ()=>{errorP.innerHTML = '';authentication.login(usrInput.value, pwdInput.value)
     .then(r=>{
       if(r['status']=='Login Info Incorrect'){
@@ -44,7 +50,9 @@ const viewController = {
     })});
     const registerButton = document.createElement("button");
     registerButton.innerHTML = "Register";
+    registerButton.id = "registerButton";
     registerButton.addEventListener('click', ()=>{viewController.createUsrRegister()});
+    main.appendChild(header);
     main.appendChild(usrInput);
     main.appendChild(pwdInput);
     main.appendChild(errorP);
@@ -56,7 +64,13 @@ const viewController = {
     const note = document.createElement("p");
     note.innerHTML = '';
     const usrInput = document.createElement("input");
+    const usrInputLabel = document.createElement('label');
+    usrInputLabel.for = 'regUSR';
+    usrInputLabel.id = "regUSRLabel";
+    usrInputLabel.innerHTML = "New Username: ";
     usrInput.type = "string";
+    usrInput.id = "regUSR";
+    usrInput.placeholder = "Username..."
     usrInput.addEventListener('keyup', ()=>{
       if (usrInput.value.length <= 6){
         console.log('check less', usrInput.value.length);
@@ -75,12 +89,14 @@ const viewController = {
       }
     });
     const validateButton = document.createElement("button");
+    validateButton.id = 'usrValButton'
     validateButton.innerHTML = "Next"
     validateButton.addEventListener('click', ()=>{note.innerHTML='';registration.usrValidate(usrInput.value)
     .then(r=>{
       if(r['status']=='User Exists'){note.innerHTML="User Already Exists...Be Unique!"}
       else {registration.values.finalUsername = usrInput.value; viewController.createUsrPassword()}
     })})
+    main.appendChild(usrInputLabel);
     main.appendChild(usrInput);
     main.appendChild(note);
   },
@@ -90,6 +106,8 @@ const viewController = {
     note.innerHTML = '';
     const pwdInput = document.createElement("input");
     pwdInput.type = "password";
+    pwdInput.id = 'pwdINPUT';
+    pwdInput.placeholder = "Password..."
     pwdInput.addEventListener('keyup', ()=>{
       if (pwdInput.value.length <= 6){
         console.log('check less', pwdInput.value.length);
@@ -108,11 +126,17 @@ const viewController = {
       }
     });
     const validateButton = document.createElement("button");
-    validateButton.innerHTML = "Next"
+    validateButton.innerHTML = "Next";
     validateButton.addEventListener('click', ()=>{
       registration.values.finalPassword = pwdInput.value;
       viewController.createPhone(); 
     });
+    validateButton.id = "vB";
+    const pwdLabel = document.createElement('label');
+    pwdLabel.id = "pwdINPUTLabel";
+    pwdLabel.for = "pwdINPUT";
+    pwdLabel.innerHTML = "Create new password: "
+    main.appendChild(pwdLabel);
     main.appendChild(pwdInput);
     main.appendChild(note);
   },
@@ -121,6 +145,8 @@ const viewController = {
     const note = document.createElement("p");
     note.innerHTML = '';
     const phnInput = document.createElement("input");
+    phnInput.placeholder = "Phone number, no area code";
+    phnInput.id = 'phnInput';
     phnInput.type = "string";
     phnInput.addEventListener('keyup', ()=>{
       if (phnInput.value.length <= 9 || phnInput.value.length >= 11){
@@ -140,22 +166,31 @@ const viewController = {
       }
     });
     const validateButton = document.createElement("button");
-    validateButton.innerHTML = "Next"
+    validateButton.id = "vPB";
+    validateButton.innerHTML = "Next";
     validateButton.addEventListener('click', ()=>{note.innerHTML='';registration.phoneValidate(phnInput.value)
     .then(r=>{
       if(r['status']=='Phone Number already in use'){note.innerHTML='Phone # already exists :-('}
       else {registration.values.finalPhone = phnInput.value; viewController.createUserFinal();}
     })})
+    const phnLabel = document.createElement('label');
+    phnLabel.id = 'phnLabel';
+    phnLabel.for = "phnInput";
+    phnLabel.innerHTML = "Add your phone number: "
+    main.appendChild(phnLabel);
     main.appendChild(phnInput);
     main.appendChild(note);
   },
   createUserFinal : ()=>{
     main.innerHTML = '';
     const msg = document.createElement('div');
+    msg.id = "msgFINAL";
     msg.innerHTML = 'See if this is right...';
     const username = document.createElement('div');
+    username.id = "usrFINAL";
     username.innerHTML = 'Username: ' + registration.values.finalUsername;
     const password = document.createElement('div');
+    password.id = "passwordFINAL";
     password.innerHTML = 'Click to peek Password ;-)';
     password.addEventListener('click', ()=>{
       password.innerHTML = 'Password: ' + registration.values.finalPassword;
@@ -164,8 +199,10 @@ const viewController = {
       }, 3000);
     });
     const phoneNumber = document.createElement('div');
+    phoneNumber.id = "phoneNumberFINAL";
     phoneNumber.innerHTML = registration.values.finalPhone;
     const register = document.createElement('button');
+    register.id = "regButFINAL";
     register.innerHTML = 'Register!'
     register.addEventListener('click', ()=>{registration.finalRegister(registration.values.finalUsername, registration.values.finalPassword, registration.values.finalPhone)
     .then(r => {
@@ -185,6 +222,7 @@ const viewController = {
       }
     })});
     const tryAgain = document.createElement('button');
+    tryAgain.id = "tryAgainFINAL";
     tryAgain.innerHTML = 'Start Over';
     tryAgain.addEventListener('click', ()=>{
       viewController.usrValidate = false;
@@ -234,14 +272,21 @@ const viewController = {
           let expDate = fObject.expirationDate; 
           let id = fObject.id;
           const itemBox = document.createElement('div');
+          itemBox.classList.add('itemBox');
           const itemDetails = document.createElement('div');
+          itemDetails.classList.add('itemDetails');
           const idName = document.createElement('div');
+          idName.classList.add('itemName');
           const idDesc = document.createElement('div');
+          idDesc.classList.add('boughtDate');
+          const idDesc1 = document.createElement('div');
+          idDesc1.classList.add('expirationDate');
           idName.innerHTML = name;
-          idDesc.innerHTML = `Bought: ${buyDate}.
-          Expires: ${expDate}`;
+          idDesc.innerHTML = `Bought: ${buyDate}`;
+          idDesc1.innerHTML = `Expires: ${expDate}`;
           itemDetails.appendChild(idName);
           itemDetails.appendChild(idDesc);
+          itemDetails.appendChild(idDesc1);
           const deleteButton = document.createElement('button');
           deleteButton.innerHTML = "Delete";
           deleteButton.addEventListener('click', ()=>{
@@ -270,19 +315,26 @@ const viewController = {
         let expDate = fObject.expirationDate; 
         let id = fObject.id;
         const itemBox = document.createElement('div');
+        itemBox.classList.add('itemBox');
         const itemDetails = document.createElement('div');
+        itemDetails.classList.add('itemDetails');
         const idName = document.createElement('div');
+        idName.classList.add('itemName');
         const idDesc = document.createElement('div');
+        idDesc.classList.add('boughtDate');
+        const idDesc1 = document.createElement('div');
+        idDesc1.classList.add('expirationDate');
         idName.innerHTML = name;
-        idDesc.innerHTML = `Bought: ${buyDate}.
-        Expires: ${expDate}`;
+        idDesc.innerHTML = `Bought: ${buyDate}`;
+        idDesc1.innerHTML = `Expires: ${expDate}`;
         itemDetails.appendChild(idName);
         itemDetails.appendChild(idDesc);
+        itemDetails.appendChild(idDesc1);
         const deleteButton = document.createElement('button');
         deleteButton.innerHTML = "Delete";
         deleteButton.addEventListener('click', ()=>{
           dbDelete.delete(user.username, user.password, id).then(r=>{
-            view.removeChild(itemBox);
+            document.getElementById('view').removeChild(itemBox);
             console.log(r)
           })
         })
@@ -300,6 +352,10 @@ const viewController = {
     view.innerHTML = '';
     controller.innerHTML = '';
     const codeInput = document.createElement('input');
+    const codeInputLabel = document.createElement('label');
+    codeInputLabel.for = "codeInput";
+    codeInputLabel.innerHTML = "Upload or Take an Image of a Barcode: ";
+    codeInputLabel.id = "codeInputLabel";
     codeInput.id = "codeInput";
     codeInput.type = 'file';
     codeInput.accept = "image/*;capture=camera";
@@ -313,6 +369,10 @@ const viewController = {
     const checkButton = document.createElement('button');
     checkButton.innerHTML = "Check Code";
     checkButton.addEventListener('click', ()=>{
+      if(viewController.upcVal == true){
+        return;
+      };
+      viewController.upcVal = true; 
       if (manOver.value == ''){
         const errorMessage = document.createElement('div');
         errorMessage.innerHTML = "Please scan or enter a UPC code.";
@@ -340,8 +400,19 @@ const viewController = {
         };
       });
     })
-    view.appendChild(codeInput);
-    view.appendChild(manOver);
+    const scanDiv = document.createElement('div');
+    scanDiv.id = 'scanDiv';
+    scanDiv.appendChild(codeInputLabel);
+    scanDiv.appendChild(codeInput);
+    view.appendChild(scanDiv);
+    const manOverLabel = document.createElement('label');
+    manOverLabel.for = "manOver";
+    manOverLabel.innerHTML = "See if code matches: "
+    const mDiv = document.createElement('div');
+    mDiv.id = "mDiv";
+    mDiv.appendChild(manOverLabel);
+    mDiv.appendChild(manOver);
+    view.appendChild(mDiv);
     const backButton = document.createElement('button');
     backButton.innerHTML = "Home";
     backButton.addEventListener('click',()=>{
@@ -352,10 +423,13 @@ const viewController = {
 
   },
   addView : (nv)=>{
+    viewController.upcVal = false; 
     let dDB;
     const upcQ = document.getElementById('manOver').value;
     const view = document.getElementById('view');
     const controller = document.getElementById('controller');
+    const itemNameDiv = document.createElement('div');
+    itemNameDiv.id = "itemNameDiv";
     const itemName = document.createElement('input');
     itemName.id = "itemName";
     itemName.type = 'String'; 
@@ -363,7 +437,13 @@ const viewController = {
     const iNLabel = document.createElement('label');
     iNLabel.for = "itemName";
     iNLabel.innerHTML = "Product Name: "
+    itemNameDiv.appendChild(iNLabel);
+    itemNameDiv.appendChild(itemName);
     const datingType = document.createElement('select');
+    datingType.id = "datingType";
+    const datingTypeLabel = document.createElement('label');
+    datingTypeLabel.for = "datingType";
+    datingTypeLabel.innerHTML = "Choose unit of time and enter shelf-life: ";
     const datingInputDiv = document.createElement('div');
     datingInputDiv.id = "datingInputDiv"
     const day = document.createElement('option');
@@ -439,9 +519,12 @@ const viewController = {
     backButton.addEventListener('click', ()=>{viewController.homeView();})
     controller.appendChild(addButton);
     controller.appendChild(backButton);
-    view.appendChild(iNLabel);
-    view.appendChild(itemName);
-    view.appendChild(datingType);
+    view.appendChild(itemNameDiv);
+    const datingChoiceDiv = document.createElement('div');
+    datingChoiceDiv.id = "datingChoiceDiv";
+    datingChoiceDiv.appendChild(datingTypeLabel);
+    datingChoiceDiv.appendChild(datingType);
+    view.appendChild(datingChoiceDiv);
     view.appendChild(datingInputDiv);
 
 
