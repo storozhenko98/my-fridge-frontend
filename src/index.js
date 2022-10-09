@@ -1,3 +1,4 @@
+// Imports
 import { authentication } from "./authenticationModule";
 import { registration } from "./registrationModule";
 import { DBpost } from "./writeModule";
@@ -6,15 +7,15 @@ import { UPC } from "./upcModule";
 import { dbDelete } from "./deleteModule";
 import Quagga from 'quagga';
 
-
+//Main
 const main = document.getElementById("main");
-
+//Auth
 const user = {
   authed : false, 
   username : '',
   password : '',
 };
-
+//View
 const viewController = {
   usrValidate : false,
   pwdValidate : false, 
@@ -333,8 +334,6 @@ const viewController = {
           let dt = [r['content']['shelfLife'], 'days'];
           let upcC = r['content']['upcCode'];
           DBpost.amend(user.username, user.password,nm, upcC, dt).then(r=>{console.log(r); viewController.homeView();});
-          //r.content
-          //DBpost.write(user.username, user.password, itemName.value, upcQ, dDB).then(r=>{console.log(r); viewController.homeView()})
         } else if (r.origin == 'chomp'){
           console.log("CHOMP", r);
           viewController.addView(r['content']['items'][0]['name']);
