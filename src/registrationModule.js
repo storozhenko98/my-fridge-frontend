@@ -5,7 +5,7 @@ const registration = {
         finalPhone: ''
     },
     usrValidate: async (usr)=>{
-        const usrResponse = await fetch('https://anon-board.a2hosted.com/register/userValidate', {
+        const usrResponse = await fetch('https://anon-board.a2hosted.com//register/userValidate', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({username: usr})
