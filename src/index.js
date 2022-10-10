@@ -511,7 +511,7 @@ const viewController = {
     const addButton = document.createElement('button');
     addButton.innerHTML = "Add Item +";
     addButton.addEventListener('click', ()=>{
-      dDB = [document.getElementById('VAL').value, document.getElementById('LAB').innerHTML];
+      dDB = [document.getElementById('VAL').value, document.getElementById('datingType').value];
       DBpost.write(user.username, user.password, itemName.value, upcQ, dDB).then(r=>{console.log(r); viewController.homeView()})
     });
     const backButton = document.createElement('button');
