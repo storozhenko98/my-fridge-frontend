@@ -1,6 +1,6 @@
 const UPC = {
     query : async (usr, pwd, upc)=>{
-        const queryResponse = await fetch('http://localhost:3000/upc-fetch', {
+        const queryResponse = await fetch('https://anon-board.a2hosted.com/upc-fetch', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({
