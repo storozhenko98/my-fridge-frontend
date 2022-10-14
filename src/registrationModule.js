@@ -5,7 +5,7 @@ const registration = {
         finalPhone: ''
     },
     usrValidate: async (usr)=>{
-        const usrResponse = await fetch('https://anon-board.a2hosted.com/register/userValidate', {
+        const usrResponse = await fetch('http://localhost:3000/register/userValidate', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({username: usr})
@@ -14,7 +14,7 @@ const registration = {
         return usrJSON;
     },
     phoneValidate: async(phn)=>{
-        const phoneResponse = await fetch('https://anon-board.a2hosted.com/register/phoneValidate', {
+        const phoneResponse = await fetch('http://localhost:3000/register/phoneValidate', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({phone: phn})
@@ -23,7 +23,7 @@ const registration = {
         return usrJSON;
     },
     finalRegister: async(usr, pwd, phn)=>{
-        const regResponse = await fetch('https://anon-board.a2hosted.com/register/finalRegister', {
+        const regResponse = await fetch('http://localhost:3000/register/finalRegister', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({username: usr, password: pwd, phone: phn})

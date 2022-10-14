@@ -1,6 +1,6 @@
 const authentication = {
     login : async (usr, pwd)=>{
-        const loginResponse = await fetch('https://anon-board.a2hosted.com/login', {
+        const loginResponse = await fetch('http://localhost:3000/login', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({username: usr, password: pwd})
