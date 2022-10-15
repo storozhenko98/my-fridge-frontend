@@ -64,6 +64,23 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+#loginDiv input {
+    width: 80%;
+    height: 2vh;
+    font-size: larger;
+    margin: 2vh;
+    border-radius: 25px;
+    padding: 10px;
+}
+#loginDivHeader{
+    text-align: center;
+}
+.loginError{
+    color: red;
+    text-align: center;
+    font-size: larger;
 }
 #footer{
     height: 9vh;

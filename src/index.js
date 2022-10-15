@@ -15,8 +15,8 @@ import logoutImg from './assets/logout.svg';
 import registerImg from './assets/register.svg';
 import syncImg from './assets/sync.svg';
 // Local Storage
-localStorage.setItem('username', 'none');
-localStorage.setItem('passwrd', 'none');
+//localStorage.setItem('username', 'none');
+//localStorage.setItem('password', 'none');
 //UI
 //Main Constants 
 const view = document.getElementById("appView");
@@ -48,6 +48,7 @@ const UI = {
     buttonThree.addEventListener('click', UI.aboutPage);
   },
   loginPage : ()=>{
+    //UI Elements Modding
     view.removeChild(landingDiv);
     const loginDiv = document.createElement('div');
     loginDiv.id = 'loginDiv';
@@ -60,15 +61,52 @@ const UI = {
     const loginPassInput = document.createElement('input');
     loginPassInput.type = 'password';
     loginPassInput.placeholder = 'Password...';
+    buttonOne.style.backgroundImage = "url('./assets/back.svg')";
+    //Removal of Event Listeners
     buttonOne.removeEventListener('click', UI.registerPage);
     buttonTwo.removeEventListener('click', UI.loginPage);
-    buttonOne.style.backgroundImage = "url('./assets/back.svg')";
-    const backFunction = ()=>{UI.landingPage(); buttonOne.removeEventListener('click', backFunction)};
-    buttonOne.addEventListener('click', backFunction);
+    //Functions 
+    //Back Function
+    const backFunction = ()=>{UI.landingPage(); 
+    buttonOne.removeEventListener('click', backFunction);
+    buttonTwo.removeEventListener('click', homeFunction)};
+    //Home Function
     const homeFunction = ()=>{
       authentication.login(loginUserInput.value, loginPassInput.value)
-      .then(m=>(console.log(m)));
+      .then(m=>{
+        //If Login Info is Correct
+        if(m.status == 'Logged In'){
+          console.log("YAY");
+          let lsUser = loginUserInput.value;
+          let lsPass = loginPassInput.value;
+          localStorage.setItem('username', lsUser);
+          localStorage.setItem('password', lsPass);
+          buttonTwo.removeEventListener('click', homeFunction);
+          buttonOne.removeEventListener('click', backFunction);
+          UI.homePage();
+        }
+        //If Login Info is Incorrect
+        else if (m.status == 'Login Info Incorrect'){
+          if(loginDiv.childElementCount == 3){
+            const incorrectLogin = document.createElement('p');
+            incorrectLogin.classList.add('loginError');
+            incorrectLogin.innerText = "Login Info Incorrect 👀 👀 👀";
+            loginDiv.appendChild(incorrectLogin);
+          };
+        }
+        //For Login Error NOS
+        else {
+          if(loginDiv.childElementCount == 3){
+            const loginErrorNOS = document.createElement('p');
+            loginErrorNOS.classList.add('loginError');
+            loginErrorNOS.innerText = "Login Issue; NOS";
+            loginDiv.appendChild(incorrectLogin);
+          };
+        }
+      });
     };
+    //Appending 
+    buttonOne.addEventListener('click', backFunction);
     buttonTwo.addEventListener('click', homeFunction);
     loginDiv.appendChild(loginDivHeader);
     loginDiv.appendChild(loginUserInput);
