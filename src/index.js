@@ -14,11 +14,85 @@ import loginImg from './assets/login.svg';
 import logoutImg from './assets/logout.svg';
 import registerImg from './assets/register.svg';
 import syncImg from './assets/sync.svg';
+// Local Storage
+localStorage.setItem('username', 'none');
+localStorage.setItem('passwrd', 'none');
+//UI
+//Main Constants 
+const view = document.getElementById("appView");
+const buttonOne = document.getElementById("buttonOne");
+const buttonTwo = document.getElementById("buttonTwo");
+const buttonThree = document.getElementById("buttonThree");
+//UI Object
+const UI = {
+  landingPage : ()=>{
+    //View Content
+    const landingDiv = document.createElement("div");
+    landingDiv.id = "landingDiv";
+    const landingDivHeader = document.createElement("h2");
+    landingDivHeader.id = "landingDivHeader";
+    landingDivHeader.innerHTML = "Welcome to myFridge🧊!";
+    const landingDivMain = document.createElement("p");
+    landingDivMain.id = "landingDivMain";
+    landingDivMain.innerText = "This webapp is a way for you to keep track of what is in your fridge and when it expires! \n \n All you have to do is scan the barcode of the item you bought 📸! \n \n This way you can avoid being sick 🥴🤢🤮! \n \n Login or Register to Start!";
+    landingDiv.appendChild(landingDivHeader);
+    landingDiv.appendChild(landingDivMain);
+    view.innerHTML = '';
+    view.appendChild(landingDiv);
+    //Button Content
+    buttonOne.style.backgroundImage = "url('./assets/register.svg')";
+    buttonOne.addEventListener('click', UI.registerPage);
+    buttonTwo.style.backgroundImage = "url('./assets/login.svg')";
+    buttonTwo.addEventListener('click', UI.loginPage);
+    buttonThree.style.backgroundImage = "url('./assets/about.svg')";
+    buttonThree.addEventListener('click', UI.aboutPage);
+  },
+  loginPage : ()=>{
+    view.removeChild(landingDiv);
+    const loginDiv = document.createElement('div');
+    loginDiv.id = 'loginDiv';
+    const loginDivHeader = document.createElement('h2');
+    loginDivHeader.id = 'loginDivHeader';
+    loginDivHeader.innerHTML = "Enter your username and password!";
+    const loginUserInput = document.createElement('input');
+    loginUserInput.type = 'String';
+    loginUserInput.placeholder = 'Username...';
+    const loginPassInput = document.createElement('input');
+    loginPassInput.type = 'password';
+    loginPassInput.placeholder = 'Password...';
+    buttonOne.removeEventListener('click', UI.registerPage);
+    buttonTwo.removeEventListener('click', UI.loginPage);
+    buttonOne.style.backgroundImage = "url('./assets/back.svg')";
+    const backFunction = ()=>{UI.landingPage(); buttonOne.removeEventListener('click', backFunction)};
+    buttonOne.addEventListener('click', backFunction);
+    const homeFunction = ()=>{
+      authentication.login(loginUserInput.value, loginPassInput.value)
+      .then(m=>(console.log(m)));
+    };
+    buttonTwo.addEventListener('click', homeFunction);
+    loginDiv.appendChild(loginDivHeader);
+    loginDiv.appendChild(loginUserInput);
+    loginDiv.appendChild(loginPassInput);
+    view.appendChild(loginDiv);
+  },
+  registerPage : ()=>{
+    
+  },
+  homePage : ()=>{
 
+  },
+  scanPage : ()=>{
 
+  },
+  addPage : ()=>{
 
-//Starter
-if (user.authed == false){viewController.createLogin()};
+  },
+  aboutPage : ()=>{
+
+  }
+};
+
+UI.landingPage();
 
 //Bar Code Reader
 function getBase64(file) {
