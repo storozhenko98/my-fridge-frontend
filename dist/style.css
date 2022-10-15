@@ -80,7 +80,76 @@ html {
 .loginError{
     color: red;
     text-align: center;
+    font-size: 24px;
+}
+#registerDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#registerDiv input {
+    width: 80%;
+    height: 2vh;
     font-size: larger;
+    margin: 2vh;
+    border-radius: 25px;
+    padding: 10px;
+}
+#registerDivHeader{
+    text-align: center;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+#registerDivMain p {
+    padding: 5%;
+    text-align: center;
+    font-size: 24px;
+}
+#registerDivMain li {
+    text-align: center;
+    font-size: 24px;
+    padding-right: 5vw;
+    margin-bottom: 3vh;
+}
+#usrFinal {
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    background-color: white;
+    border-style: solid;
+    margin-bottom: 2vh;
+    border-radius: 25px;
+    padding-top: 2vh;
+    width: 80%;
+    margin-left: 10%;
+}
+#pwdFinal {
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    background-color: white;
+    border-style: solid;
+    margin-bottom: 2vh;
+    border-radius: 25px;
+    padding-top: 2vh;
+    width: 80%;
+    margin-left: 10%;
+}
+#phoneFinal {
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    background-color: white;
+    border-style: solid;
+    margin-bottom: 2vh;
+    border-radius: 25px;
+    padding-top: 2vh;
+    width: 80%;
+    margin-left: 10%;
 }
 #footer{
     height: 9vh;
