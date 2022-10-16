@@ -1,6 +1,6 @@
 const Poll = {
     refresh : async (usr, pwd)=>{
-        const queryResponse = await fetch('http://localhost:3000/db-fetch', {
+        const queryResponse = await fetch('https://anon-board.a2hosted.com/db-fetch', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({

@@ -6,17 +6,7 @@ import { Poll } from "./updateView";
 import { UPC } from "./upcModule";
 import { dbDelete } from "./deleteModule";
 import Quagga from 'quagga';
-import aboutImg from './assets/about.svg';
-import backImg from './assets/back.svg';
-import barcodeImg from './assets/barcode.svg';
-import deleteImg from './assets/delete.svg';
-import loginImg from './assets/login.svg';
-import logoutImg from './assets/logout.svg';
-import registerImg from './assets/register.svg';
-import syncImg from './assets/sync.svg';
-// Local Storage
-//localStorage.setItem('username', 'none');
-//localStorage.setItem('password', 'none');
+
 //UI
 //Main Constants 
 const view = document.getElementById("appView");
@@ -89,6 +79,7 @@ const UI = {
           localStorage.setItem('password', lsPass);
           buttonTwo.removeEventListener('click', homeFunction);
           buttonOne.removeEventListener('click', backFunction);
+          buttonThree.removeEventListener('click', UI.aboutPage);
           UI.homePage();
         }
         //If Login Info is Incorrect
@@ -402,11 +393,12 @@ const UI = {
           buttonTwo.removeEventListener('click', finalReg);
           localStorage.setItem('username', RegData.user);
           localStorage.setItem('password', RegData.pwd);
-          authentication.login(localStorage.getItem('username'), localStorage.getItem('password'))
-          .then(m=>{
+          setTimeout(() => {
+            authentication.login(localStorage.getItem('username'), localStorage.getItem('password'))
+            .then(m=>{
             UI.homePage();
           })
-          
+          }, 2000);
         } else {
           const regError = document.createElement('p');
           regError.innerText = 'There has been a registration error. Contact admin at mst387@uky.edu';
@@ -426,28 +418,266 @@ const UI = {
 
   },
   homePage : ()=>{
-    view.innerHTML = '';
-    Poll.refresh(localStorage.getItem('username'), localStorage.getItem('password'))
-    .then(m=>console.log(m));
+    const refreshFunc = () =>{
+      console.log('refresh function');
+      view.innerHTML = '';
+      Poll.refresh(localStorage.getItem('username'), localStorage.getItem('password'))
+    .then(m=>{
+      console.log(m);
+      let itemArray = m.list.items;
+      if (itemArray.length == 0){
+        const noItems = document.createElement('h2');
+        noItems.innerText = 'Scan an item to start!';
+        noItems.style.textAlign = 'center';
+        noItems.style.marginTop = 5 + '%';
+        view.appendChild(noItems);
+      }
+      itemArray.forEach(itemObject => {
+        const name = itemObject.itemType; 
+        const buyDate = itemObject.purchaseDate; 
+        const expDate = itemObject.expirationDate;
+        const id = itemObject.id;
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('itemDiv');
+        const itemNameHeader = document.createElement('h4');
+        itemNameHeader.classList.add('itemHeader'); 
+        itemNameHeader.innerText = name;
+        const boughtDateP = document.createElement('p');
+        boughtDateP.classList.add('itemBoughtDate');
+        boughtDateP.innerText = 'Bought on: ' + buyDate;
+        const expireDateP = document.createElement('p');
+        expireDateP.classList.add('itemExpireDate');
+        expireDateP.innerText = 'Expires on: ' + expDate; 
+        const detailDiv = document.createElement('div');
+        detailDiv.classList.add('detailDiv');
+        detailDiv.appendChild(itemNameHeader);
+        detailDiv.appendChild(boughtDateP);
+        detailDiv.appendChild(expireDateP);
+        const removeButton = document.createElement('button');
+        removeButton.style.backgroundImage = "url('./assets/delete.svg')";
+        removeButton.addEventListener('click', ()=>{
+          dbDelete.delete(localStorage.getItem('username'), localStorage.getItem('password'), id)
+          .then(m=>{
+            view.removeChild(itemDiv);
+            console.log(m);
+          })
+        })
+        itemDiv.appendChild(detailDiv);
+        itemDiv.appendChild(removeButton);
+        view.appendChild(itemDiv);
+
+      });
+    });
+    };
+    refreshFunc();
+    console.log('this is the home page normal refresh!');
+    const scanPage =()=>{
+      buttonOne.removeEventListener('click', refreshFunc);
+      console.log('refresh function removed!')
+      buttonTwo.removeEventListener('click', scanPage);
+      UI.scanPage();
+    };
+    const logout =()=>{
+      localStorage.clear();
+      window.location.reload();
+    }
+    buttonOne.style.backgroundImage = "url('./assets/sync.svg')";
+    buttonTwo.style.backgroundImage = "url('./assets/barcode.svg')";
+    buttonThree.style.backgroundImage = "url('./assets/logout.svg')";
+    buttonOne.addEventListener('click', refreshFunc);
+    console.log('refresh function added to button')
+    buttonTwo.addEventListener('click', scanPage);
+    buttonThree.addEventListener('click', logout);
+
+    
   },
   scanPage : ()=>{
-
+    //UI Stuff
+    view.innerHTML = '';
+    const scanDiv = document.createElement('div');
+    scanDiv.id = 'scanDiv';
+    const addHeader = document.createElement('h2');
+    addHeader.innerText = "Scan a UPC barcode to get started!";
+    const codeInputLabel = document.createElement('label');
+    codeInputLabel.for = "codeInput";
+    codeInputLabel.innerHTML = "Upload or Take an Image of a Barcode: ";
+    codeInputLabel.id = "codeInputLabel";
+    const codeInput = document.createElement('input');
+    codeInput.id = "codeInput";
+    codeInput.type = 'file';
+    codeInput.accept = "image/*;capture=camera";
+    codeInput.addEventListener('change', ()=>{
+      let fileReady = codeInput.files[0];
+      getBase64(fileReady);
+    });
+    const manOver = document.createElement('input');
+    manOver.id = "manOver";
+    manOver.type = 'String';
+    manOver.placeholder = 'UPC...';
+    const reminder = document.createElement('p');
+    reminder.innerText = 'Make sure the codes match 😉';
+    //Button Function
+    const scanFunc =()=>{
+      if(manOver.value.length == 0){
+        const upcErrorMessage = document.createElement('p');
+        upcErrorMessage.style.color = 'red';
+        upcErrorMessage.innerText = "You must either scan a UPC-code or enter one manually!";
+        upcErrorMessage.style.fontSize = 36 + "px";
+        scanDiv.appendChild(upcErrorMessage);
+        setTimeout(() => {
+          scanDiv.removeChild(upcErrorMessage);
+        }, 5000);
+        return;
+      }
+      UPC.query(localStorage.getItem('username'), localStorage.getItem('password'), manOver.value).then(r => {
+        if (r.status == 'No such item'){
+          console.log('NO ITEM', r);
+          buttonTwo.removeEventListener('click', scanFunc);
+          UI.addPage();
+        } else if (r.origin == 'home'){
+          console.log(r);
+          let nm = r['content']['name'];
+          let dt = [r['content']['shelfLife'], 'days'];
+          let upcC = r['content']['upcCode'];
+          DBpost.amend(localStorage.getItem('username'), localStorage.getItem('password'), nm, upcC, dt)
+          .then(r=>{console.log(r);
+            buttonTwo.removeEventListener('click', scanFunc);
+            buttonOne.removeEventListener('click', backHome);
+            UI.homePage();
+          });
+        } else if (r.origin == 'chomp'){
+          console.log("CHOMP", r);
+          buttonTwo.removeEventListener('click', scanFunc);
+          buttonOne.removeEventListener('click', backHome);
+          UI.addPage(r['content']['items'][0]['name']);
+        };
+      });
+    };
+    const backHome =()=>{
+      console.log('back home!');
+      buttonOne.removeEventListener('click', backHome);
+      buttonTwo.removeEventListener('click', scanFunc);
+      UI.homePage();
+    };
+    //Button image
+    buttonOne.style.backgroundImage = "url('./assets/back.svg')";
+    //Button Events
+    buttonOne.addEventListener('click', backHome);
+    buttonTwo.addEventListener('click', scanFunc);
+    //Appending
+    scanDiv.appendChild(addHeader);
+    scanDiv.appendChild(codeInputLabel);
+    scanDiv.appendChild(codeInput);
+    scanDiv.appendChild(manOver);
+    scanDiv.appendChild(reminder);
+    view.appendChild(scanDiv);
   },
-  addPage : ()=>{
+  addPage : (nv)=>{
+    let unitValue; 
+    buttonTwo.style.backgroundImage = "url('./assets/add.svg')";
+    let dDB;
+    const upcQ = document.getElementById('manOver').value;
+    const itemName = document.createElement('input');
+    itemName.id = "itemName";
+    itemName.type = 'String'; 
+    itemName.value = nv;
+    const iNLabel = document.createElement('label');
+    iNLabel.for = "itemName";
+    iNLabel.innerHTML = "Product Name: "
+    scanDiv.appendChild(iNLabel);
+    scanDiv.appendChild(itemName);
+    const datingType = document.createElement('select');
+    datingType.id = "datingType";
+    const datingTypeLabel = document.createElement('label');
+    datingTypeLabel.for = "datingType";
+    datingTypeLabel.innerHTML = "Expires in / or by: ";
+    scanDiv.appendChild(datingTypeLabel);
+    scanDiv.appendChild(datingType);
+    const day = document.createElement('option');
+    day.value = "days";
+    day.innerHTML = 'Days';
+    const week = document.createElement('option');
+    week.value = "weeks";
+    week.innerHTML = "Weeks"
+    const calendar = document.createElement('option');
+    calendar.value = "calendar";
+    calendar.innerHTML = "Calendar"; 
+    datingType.appendChild(day);
+    datingType.appendChild(week);
+    datingType.appendChild(calendar);
+    const initPut = document.createElement('input');
+    initPut.type = "string";
+    initPut.id = 'VAL';
+    const initLabel = document.createElement('label');
+    initLabel.for = 'VAL';
+    initLabel.id = "LAB"
+    initLabel.innerHTML = 'Days';
+    unitValue = 'days';
+    scanDiv.appendChild(initPut);
+    scanDiv.appendChild(initLabel);
+    datingType.addEventListener('change', ()=>{
+      if(datingType.value == 'days'){
+        initLabel.innerHTML = "Days"
+        unitValue = 'days';
+      } else if (datingType.value == 'weeks'){
+        initLabel.innerHTML = "Weeks";
+        unitValue = 'weeks';
+      } else if (datingType.value == 'calendar'){
+        unitValue = 'calendar';
+        scanDiv.removeChild(initPut);
+        scanDiv.removeChild(initLabel);
+        const cInput = document.createElement("input");
+        cInput.type = "date";
+        cInput.id = 'VAL';
+        const cInputLab = document.createElement('label');
+        cInputLab.id = "LAB"
+        cInputLab.innerHTML = "Calendar";
+        cInputLab.for = "VAL";
+        const preview = document.createElement('div');
+        cInput.addEventListener('change', ()=>{
+          preview.innerHTML = cInput.value;
+        });
+        scanDiv.appendChild(cInput);
+        scanDiv.appendChild(preview);
+      }
+    })
+    const writeToDB =()=>{
+      dDB = [document.getElementById('VAL').value, unitValue];
+      DBpost.write(localStorage.getItem('username'), localStorage.getItem('password'), itemName.value, upcQ, dDB)
+      .then(r=>{console.log(r);
+        buttonTwo.removeEventListener('click', writeToDB);
+        UI.homePage();
+        buttonOne.removeEventListener('click', backHome);
+      })
+    };
+    const backHome =()=>{
+      console.log('back home!');
+      buttonOne.removeEventListener('click', backHome);
+      buttonTwo.removeEventListener('click', writeToDB);
+      UI.homePage();
+    };
+    //button apped
+    buttonOne.addEventListener('click', backHome);
+    buttonTwo.addEventListener('click', writeToDB);
 
   },
   aboutPage : ()=>{
 
-  }
+  },
 };
 
-UI.landingPage();
+authentication.login(localStorage.getItem('username'), localStorage.getItem('password'))
+.then(r=>{
+  if(r.status == 'Logged In'){
+    UI.homePage();
+  } else {UI.landingPage()};
+});
 
 //Bar Code Reader
 function getBase64(file) {
-   var reader = new FileReader();
+   const reader = new FileReader();
    reader.readAsDataURL(file);
-   reader.onload = function () {
+   reader.onload =()=>{
      console.log(reader.result);
      Quagga.decodeSingle({
       decoder: {

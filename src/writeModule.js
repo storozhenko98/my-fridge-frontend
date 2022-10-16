@@ -1,6 +1,6 @@
 const DBpost = {
     write : async(usr, pwd, name, upc, date)=>{
-        const dbResponse = await fetch('http://localhost:3000/add-to-db', {
+        const dbResponse = await fetch('https://anon-board.a2hosted.com/add-to-db', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({
@@ -15,7 +15,7 @@ const DBpost = {
         return usrJSON;
     },
     amend : async(usr, pwd, name, upc, date)=>{
-        const dbResponse = await fetch('http://localhost:3000/add-to-db', {
+        const dbResponse = await fetch('https://anon-board.a2hosted.com/add-to-db', {
             method: 'POST',
             headers : {'Content-Type' : 'application/json',},
             body: JSON.stringify({

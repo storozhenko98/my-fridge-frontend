@@ -151,7 +151,73 @@ html {
     width: 80%;
     margin-left: 10%;
 }
-#footer{
+.itemDiv{
+    border-style: solid;
+    background-color: white;
+    margin: 5%;
+    padding: 5%;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 5px 5px;
+}
+
+.itemDiv button {
+    border-radius: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-width: 60px;
+    height: 60px;
+    margin-left: 15px;
+    background-color: rgb(255, 160, 160);
+    border-style: none;
+    box-shadow: 0px 5px 5px;
+}
+.itemDiv button:active{
+    border-radius: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-width: 60px;
+    height: 60px;
+    margin-left: 15px;
+    background-color: rgb(255, 160, 160);
+    border-style: solid;
+    box-shadow: none;
+}
+#scanDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#scanDiv h2{
+    text-align: center;
+}
+#scanDiv label {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+}
+#scanDiv input{
+    width: 80%;
+    font-size: larger;
+    margin-top: 2vh;
+    border-radius: 25px;
+    padding: 10px;
+}
+#scanDiv select{
+    width: 80%;
+    font-size: larger;
+    border-radius: 25px;
+    padding: 10px;
+    margin-top: 2vh;
+}
+#scanDiv p{
+    text-align: center;
+    font-size: 24px;
+}
+#footer {
     height: 9vh;
     box-sizing: border-box;
     background-color: rgb(223, 249, 213);
