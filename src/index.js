@@ -533,7 +533,8 @@ const UI = {
         if (r.status == 'No such item'){
           console.log('NO ITEM', r);
           buttonTwo.removeEventListener('click', scanFunc);
-          UI.addPage();
+          buttonOne.removeEventListener('click', backHome);
+          UI.addPage('');
         } else if (r.origin == 'home'){
           console.log(r);
           let nm = r['content']['name'];
