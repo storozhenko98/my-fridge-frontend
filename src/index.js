@@ -617,28 +617,45 @@ const UI = {
     scanDiv.appendChild(initLabel);
     datingType.addEventListener('change', ()=>{
       if(datingType.value == 'days'){
-        initLabel.innerHTML = "Days"
+        scanDiv.removeChild(document.getElementById('VAL'));
+        scanDiv.removeChild(document.getElementById('LAB'));
         unitValue = 'days';
+        const initPut = document.createElement('input');
+        initPut.type = "string";
+        initPut.id = 'VAL';
+        const initLabel = document.createElement('label');
+        initLabel.for = 'VAL';
+        initLabel.id = "LAB"
+        initLabel.innerHTML = 'Days';
+        scanDiv.appendChild(initPut);
+        scanDiv.appendChild(initLabel);
       } else if (datingType.value == 'weeks'){
-        initLabel.innerHTML = "Weeks";
+        scanDiv.removeChild(document.getElementById('VAL'));
+        scanDiv.removeChild(document.getElementById('LAB'));
         unitValue = 'weeks';
+        const initPut = document.createElement('input');
+        initPut.type = "string";
+        initPut.id = 'VAL';
+        const initLabel = document.createElement('label');
+        initLabel.for = 'VAL';
+        initLabel.id = "LAB"
+        initLabel.innerHTML = 'Weeks';
+        scanDiv.appendChild(initPut);
+        scanDiv.appendChild(initLabel);
+
       } else if (datingType.value == 'calendar'){
+        scanDiv.removeChild(document.getElementById('VAL'));
+        scanDiv.removeChild(document.getElementById('LAB'));
         unitValue = 'calendar';
-        scanDiv.removeChild(initPut);
-        scanDiv.removeChild(initLabel);
         const cInput = document.createElement("input");
         cInput.type = "date";
         cInput.id = 'VAL';
         const cInputLab = document.createElement('label');
         cInputLab.id = "LAB"
-        cInputLab.innerHTML = "Calendar";
+        cInputLab.innerHTML = "Calendar: ";
         cInputLab.for = "VAL";
-        const preview = document.createElement('div');
-        cInput.addEventListener('change', ()=>{
-          preview.innerHTML = cInput.value;
-        });
+        scanDiv.appendChild(cInputLab);
         scanDiv.appendChild(cInput);
-        scanDiv.appendChild(preview);
       }
     })
     const writeToDB =()=>{
