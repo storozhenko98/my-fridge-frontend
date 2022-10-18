@@ -699,7 +699,7 @@ function getBase64(file) {
      console.log(reader.result);
      Quagga.decodeSingle({
       decoder: {
-          readers: ["upc_reader"] // List of active readers
+          readers: ["ean_reader", "upc_reader", "upc_e_reader", "ean_8_reader"] // List of active readers
       },
       locate: true, // try to locate the barcode in the image
       src: reader.result // or 'data:image/jpg;base64,' + data
