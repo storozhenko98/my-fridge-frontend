@@ -502,9 +502,9 @@ const UI = {
     const vidContainer = document.createElement('div');
     vidContainer.id = 'vidContainer';
 
-    const videoElement = document.createElement('video');
-    videoElement.autoplay = true;
-    videoElement.id = 'videoElement';
+    //const videoElement = document.createElement('video');
+    //videoElement.autoplay = true;
+    //videoElement.id = 'videoElement';
 
     const manOver = document.createElement('input');
     manOver.id = "manOver";
@@ -551,6 +551,7 @@ const UI = {
       });
     };
     const backHome =()=>{
+      Quagga.stop();
       console.log('back home!');
       buttonOne.removeEventListener('click', backHome);
       buttonTwo.removeEventListener('click', scanFunc);
@@ -563,31 +564,15 @@ const UI = {
     buttonTwo.addEventListener('click', scanFunc);
     //Appending
     scanDiv.appendChild(addHeader);
-    vidContainer.appendChild(videoElement);
     scanDiv.appendChild(vidContainer);
     scanDiv.appendChild(manOver);
     scanDiv.appendChild(reminder);
     view.appendChild(scanDiv);
-
-    const video = document.querySelector("#videoElement");
-    if (navigator.mediaDevices.getUserMedia) {
-      console.log('init Vid');
-      navigator.mediaDevices.getUserMedia({ video: true, facingMode: {
-        exact: 'environment'
-      } })
-        .then(function (stream) {
-          video.srcObject = stream;
-        })
-        .catch(function (error) {
-          console.log("Something went wrong!");
-          console.log(error);
-        });
-    };
     Quagga.init({
       inputStream : {
         name : "Live",
         type : "LiveStream",
-        target: document.querySelector('#videoElement')    // Or '#yourElement' (optional)
+        target: document.querySelector('#vidContainer')    // Or '#yourElement' (optional)
       },
       decoder : {
         readers : ["upc_reader"]
@@ -604,7 +589,6 @@ const UI = {
     Quagga.onDetected(data =>{
       console.log(data.codeResult.code);
       document.getElementById("manOver").value = data.codeResult.code;
-      Quagga.stop();
     });
   },
   addPage : (nv)=>{
@@ -697,12 +681,14 @@ const UI = {
       dDB = [document.getElementById('VAL').value, unitValue];
       DBpost.write(localStorage.getItem('username'), localStorage.getItem('password'), itemName.value, upcQ, dDB)
       .then(r=>{console.log(r);
+        Quagga.stop();
         buttonTwo.removeEventListener('click', writeToDB);
         UI.homePage();
         buttonOne.removeEventListener('click', backHome);
       })
     };
     const backHome =()=>{
+      Quagga.stop();
       console.log('back home!');
       buttonOne.removeEventListener('click', backHome);
       buttonTwo.removeEventListener('click', writeToDB);
