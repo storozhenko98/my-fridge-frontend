@@ -256,3 +256,15 @@ html {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+#vidContainer {
+	margin: 0px auto;
+	width: 90%;
+	height: 30vh;
+	border: 10px #333 solid;
+}
+#videoElement {
+	width: 100%;
+	height: 30vh;
+	background-color: #666;
+}
