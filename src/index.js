@@ -498,18 +498,14 @@ const UI = {
     scanDiv.id = 'scanDiv';
     const addHeader = document.createElement('h2');
     addHeader.innerText = "Scan a UPC barcode to get started!";
-    const codeInputLabel = document.createElement('label');
-    codeInputLabel.for = "codeInput";
-    codeInputLabel.innerHTML = "Upload or Take an Image of a Barcode: ";
-    codeInputLabel.id = "codeInputLabel";
-    const codeInput = document.createElement('input');
-    codeInput.id = "codeInput";
-    codeInput.type = 'file';
-    codeInput.accept = "image/*;capture=camera";
-    codeInput.addEventListener('change', ()=>{
-      let fileReady = codeInput.files[0];
-      getBase64(fileReady);
-    });
+
+    const vidContainer = document.createElement('div');
+    vidContainer.id = 'vidContainer';
+
+    const videoElement = document.createElement('video');
+    videoElement.autoplay = true;
+    videoElement.id = 'videoElement';
+
     const manOver = document.createElement('input');
     manOver.id = "manOver";
     manOver.type = 'String';
@@ -567,11 +563,49 @@ const UI = {
     buttonTwo.addEventListener('click', scanFunc);
     //Appending
     scanDiv.appendChild(addHeader);
-    scanDiv.appendChild(codeInputLabel);
-    scanDiv.appendChild(codeInput);
+    vidContainer.appendChild(videoElement);
+    scanDiv.appendChild(vidContainer);
     scanDiv.appendChild(manOver);
     scanDiv.appendChild(reminder);
     view.appendChild(scanDiv);
+
+    const video = document.querySelector("#videoElement");
+    if (navigator.mediaDevices.getUserMedia) {
+      console.log('init Vid');
+      navigator.mediaDevices.getUserMedia({ video: true, facingMode: {
+        exact: 'environment'
+      } })
+        .then(function (stream) {
+          video.srcObject = stream;
+        })
+        .catch(function (error) {
+          console.log("Something went wrong!");
+          console.log(error);
+        });
+    };
+    Quagga.init({
+      inputStream : {
+        name : "Live",
+        type : "LiveStream",
+        target: document.querySelector('#videoElement')    // Or '#yourElement' (optional)
+      },
+      decoder : {
+        readers : ["upc_reader"]
+      }
+    }, function(err) {
+        if (err) {
+            console.log(err);
+            return
+        }
+        console.log("Initialization finished. Ready to start");
+        Quagga.start();
+    });
+  
+    Quagga.onDetected(data =>{
+      console.log(data.codeResult.code);
+      document.getElementById("manOver").value = data.codeResult.code;
+      Quagga.stop();
+    });
   },
   addPage : (nv)=>{
     let unitValue; 
